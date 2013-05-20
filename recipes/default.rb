@@ -38,6 +38,10 @@ node['munin-node']['plugin']['conf'].each do |section,content|
   content = content.join("\n") if content.kind_of? Array
   file "/etc/munin/plugin-conf.d/#{name}" do
     content "[#{section}]\n#{content}\n"
+    owner 'root'
+    group 'root'
+    mode 00660 # may contain passwords
+    notifies :restart, 'service[munin-node]'
   end
 end
 
