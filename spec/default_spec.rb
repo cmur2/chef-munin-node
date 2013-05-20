@@ -47,6 +47,15 @@ describe 'munin-node::default' do
     expect(chef_run).to create_file_with_content "/etc/munin/plugin-conf.d/df", "[df*]\nenv.exclude none unknown iso9660 squashfs udf romfs ramfs debugfs\nenv.warning 92\nenv.critical 98\n"
   end
 
+  it 'installs additional user-defined packages' do
+    chef_runner.node.set['munin-node']['additional_packages'] = [
+      'foo', 'bar'
+    ]
+    chef_run = chef_runner.converge 'munin-node::default'
+    expect(chef_run).to install_package 'foo'
+    expect(chef_run).to install_package 'bar'
+  end
+
   it 'downloads plugins via http' do
     chef_runner.node.set['munin-node']['plugin']['downloads'] = {
       'my_plugin' => {

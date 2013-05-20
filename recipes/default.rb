@@ -15,6 +15,10 @@ package 'munin-node' do
   notifies :run, "execute[clean-default-plugin-confd]", :immediately
 end
 
+node['munin-node']['additional_packages'].each do |pkg|
+  package pkg
+end
+
 node['munin-node']['plugin']['downloads'].each do |identifier,source_spec|
   case source_spec['type']
   when 'http'
