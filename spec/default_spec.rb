@@ -32,4 +32,12 @@ describe 'munin-node::default' do
     expect(chef_run).to create_link "/etc/munin/plugins/if_eth0"
     expect(chef_run).to create_link "/etc/munin/plugins/custom_path"
   end
+
+  it 'creates plugin-conf.d files for every plugin to configure' do
+    chef_runner.node.set['munin-node']['plugin']['conf'] = {
+      'if_*' => 'user root'
+    }
+    chef_run = chef_runner.converge 'munin-node::default'
+    expect(chef_run).to create_file_with_content "/etc/munin/plugin-conf.d/if_", "[if_*]\nuser root\n"
+  end
 end

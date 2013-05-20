@@ -22,3 +22,5 @@ default['munin-node']['conf'] = {
 }
 
 default['munin-node']['plugin']['list'] = {}
+
+default['munin-node']['plugin']['conf'] = {}

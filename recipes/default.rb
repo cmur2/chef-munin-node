@@ -32,6 +32,14 @@ node['munin-node']['plugin']['list'].each do |name,target|
   end
 end
 
+node['munin-node']['plugin']['conf'].each do |section,content|
+  # replace illegal/discouraged characters for file names
+  name = section.gsub(/[*]/, '')
+  file "/etc/munin/plugin-conf.d/#{name}" do
+    content "[#{section}]\n#{content}\n"
+  end
+end
+
 service 'munin-node' do
   action [:enable, :start]
 end
