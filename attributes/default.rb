@@ -20,3 +20,5 @@ default['munin-node']['conf'] = {
   'host' => '*',
   'port' => 4949
 }
+
+default['munin-node']['plugin']['list'] = {}

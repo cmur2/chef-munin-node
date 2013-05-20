@@ -22,4 +22,14 @@ describe 'munin-node::default' do
     expect(chef_run).to start_service 'munin-node'
     expect(chef_run).to set_service_to_start_on_boot 'munin-node'
   end
+  
+  it 'symlinks enabled plugins' do
+    chef_runner.node.set['munin-node']['plugin']['list'] = {
+      'if_eth0' => '/usr/share/munin/plugins/if_',
+      'custom_path' => '/opt/custom_path'
+    }
+    chef_run = chef_runner.converge 'munin-node::default'
+    expect(chef_run).to create_link "/etc/munin/plugins/if_eth0"
+    expect(chef_run).to create_link "/etc/munin/plugins/custom_path"
+  end
 end
