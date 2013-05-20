@@ -12,7 +12,7 @@ end
 package 'munin-node' do
   action :install
   notifies :run, "execute[clean-default-plugins]"
-#  notifies :run, "execute[clean-default-plugin-conf]"
+  notifies :run, "execute[clean-default-plugin-conf]"
 end
 
 file "/etc/munin/munin-node.conf" do
