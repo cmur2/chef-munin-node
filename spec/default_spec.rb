@@ -35,9 +35,15 @@ describe 'munin-node::default' do
 
   it 'creates plugin-conf.d files for every plugin to configure' do
     chef_runner.node.set['munin-node']['plugin']['conf'] = {
-      'if_*' => 'user root'
+      'if_*' => 'user root',
+      'df*' => [
+        'env.exclude none unknown iso9660 squashfs udf romfs ramfs debugfs',
+        'env.warning 92',
+        'env.critical 98'
+      ]
     }
     chef_run = chef_runner.converge 'munin-node::default'
     expect(chef_run).to create_file_with_content "/etc/munin/plugin-conf.d/if_", "[if_*]\nuser root\n"
+    expect(chef_run).to create_file_with_content "/etc/munin/plugin-conf.d/df", "[df*]\nenv.exclude none unknown iso9660 squashfs udf romfs ramfs debugfs\nenv.warning 92\nenv.critical 98\n"
   end
 end

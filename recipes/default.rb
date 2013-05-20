@@ -35,6 +35,7 @@ end
 node['munin-node']['plugin']['conf'].each do |section,content|
   # replace illegal/discouraged characters for file names
   name = section.gsub(/[*]/, '')
+  content = content.join("\n") if content.kind_of? Array
   file "/etc/munin/plugin-conf.d/#{name}" do
     content "[#{section}]\n#{content}\n"
   end
