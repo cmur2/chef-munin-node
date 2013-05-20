@@ -46,4 +46,30 @@ describe 'munin-node::default' do
     expect(chef_run).to create_file_with_content "/etc/munin/plugin-conf.d/if_", "[if_*]\nuser root\n"
     expect(chef_run).to create_file_with_content "/etc/munin/plugin-conf.d/df", "[df*]\nenv.exclude none unknown iso9660 squashfs udf romfs ramfs debugfs\nenv.warning 92\nenv.critical 98\n"
   end
+
+  it 'downloads plugins via http' do
+    chef_runner.node.set['munin-node']['plugin']['downloads'] = {
+      'my_plugin' => {
+        'type' => 'http',
+        'url' => 'http://example.org/my_plugin',
+        'dest' => '/tmp/my_plugin'
+      }
+    }
+    chef_run = chef_runner.converge 'munin-node::default'
+    expect(chef_run).to create_remote_file('/tmp/my_plugin').with(:source => 'http://example.org/my_plugin')
+  end
+
+  it 'downloads plugins via git' do
+    chef_runner.node.set['munin-node']['plugin']['downloads'] = {
+      'my_plugin' => {
+        'type' => 'git',
+        'repo' => 'git://github.com/munin-monitoring/contrib.git',
+        'dest' => '/tmp/my_plugin_collection',
+        'ref' => 'my_branch'
+      }
+    }
+    chef_run = chef_runner.converge 'munin-node::default'
+
+    pending 'Cannot test git clones'
+  end
 end

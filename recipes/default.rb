@@ -15,6 +15,26 @@ package 'munin-node' do
   notifies :run, "execute[clean-default-plugin-confd]", :immediately
 end
 
+node['munin-node']['plugin']['downloads'].each do |identifier,source_spec|
+  case source_spec['type']
+  when 'http'
+    remote_file source_spec['dest'] do
+      source source_spec['url']
+      owner 'root'
+      group 'root'
+      mode 00755
+    end
+  when 'git'
+    git source_spec['dest'] do
+      repository source_spec['repo']
+      reference source_spec['ref'] if source_spec['ref']
+      user 'root'
+      group 'root'
+      action :sync
+    end
+  end
+end
+
 file "/etc/munin/munin-node.conf" do
   content node.generate_munin_node_conf
   mode 00644
