@@ -1,5 +1,19 @@
 
-package 'munin-node'
+execute 'clean-default-plugins' do
+  command "rm -f /etc/munin/plugins/*"
+  action :nothing
+end
+
+execute 'clean-default-plugin-confd' do
+  command "rm -f /etc/munin/plugin-conf.d/*"
+  action :nothing
+end
+
+package 'munin-node' do
+  action :install
+  notifies :run, "execute[clean-default-plugins]"
+#  notifies :run, "execute[clean-default-plugin-conf]"
+end
 
 file "/etc/munin/munin-node.conf" do
   content node.generate_munin_node_conf
