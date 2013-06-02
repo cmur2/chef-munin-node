@@ -53,7 +53,7 @@ Example snippet:
 
 #### plugin download
 
-Downloads additional files via HTTP or via cloning a git repository into the maschine to allow easy pulling of new plugins with the same cookbook.
+Downloads additional files via HTTP or via cloning a git repository into the machine to allow easy pulling of new plugins with the same cookbook.
 
 Example snippet:
 
