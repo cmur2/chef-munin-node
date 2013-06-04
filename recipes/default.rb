@@ -36,6 +36,8 @@ node['munin-node']['plugin']['downloads'].each do |identifier,source_spec|
       group 'root'
       action :sync
     end
+  when 'package'
+    package source_spec['name']
   end
 end
 

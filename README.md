@@ -53,7 +53,7 @@ Example snippet:
 
 #### plugin download
 
-Downloads additional files via HTTP or via cloning a git repository into the machine to allow easy pulling of new plugins with the same cookbook.
+Downloads additional files via HTTP or via cloning a git repository or via installing a package into the machine to allow easy pulling of new plugins with the same cookbook.
 
 Example snippet:
 
@@ -68,6 +68,10 @@ Example snippet:
     "type": "git",
     "repo": "git://github.com/munin-monitoring/contrib.git",
     "dest": "/tmp/my_plugin_collection"
+  },
+  "my_plugin3": {
+    "type": "package",
+    "name": "my-plugin-package"
   }
 }
 ```

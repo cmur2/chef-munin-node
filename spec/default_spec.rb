@@ -81,4 +81,15 @@ describe 'munin-node::default' do
 
     pending 'Cannot test git clones'
   end
+  
+  it 'downloads plugins via package' do
+    chef_runner.node.set['munin-node']['plugin']['downloads'] = {
+      'my_plugin' => {
+        'type' => 'package',
+        'name' => 'my-plugin-package'
+      }
+    }
+    chef_run = chef_runner.converge 'munin-node::default'
+    expect(chef_run).to install_package 'my-plugin-package'
+  end
 end
